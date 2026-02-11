@@ -4,22 +4,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class DriverFactory {
-    private static final String[] avaiblesBrowsers = {"edge","firefox"};
 
-    public static WebDriver setBrowser (String browser){
+    public static WebDriver setBrowser(String browser) {
         browser = browser.toLowerCase();
-        if (browser == null || browser.isEmpty() ){
-            throw new IllegalArgumentException();
+        Map<String, Supplier<WebDriver>> browserMap = Map.of(
+                "edge", EdgeDriver::new,
+                "firefox", FirefoxDriver::new
+        );
+
+        if (!browserMap.containsKey(browser)) {
+            throw new IllegalArgumentException("The navegator especified is has not support: " + browser);
         }
-        if (browser.equals(avaiblesBrowsers[0])){
-            return new EdgeDriver();
-        }
-        if (browser.equals(avaiblesBrowsers[1])){
-            return new FirefoxDriver();
-        }
-        return null;
+
+        return browserMap.get(browser).get();
     }
 }
