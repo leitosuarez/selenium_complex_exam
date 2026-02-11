@@ -41,7 +41,7 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
         this.driver.quit();
     }
 
-    public String getTitle(String title){
+    public String getTitle(){
         return driver.getTitle();
     }
 

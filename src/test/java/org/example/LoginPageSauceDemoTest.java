@@ -8,26 +8,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pages.LoginPageSauceDemo;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class LoginPageSauceDemoTest {
     private static final Logger logger = LoggerFactory.getLogger(LoginPageSauceDemoTest.class);
-
-    private String browser;
+    private static final String VALID_PASSWORD = "secret_sauce";
     private LoginPageSauceDemo loginPage;
-    private ArrayList<String> validUsers;
+    private String randomValidUsername;
 
     @Before
      public void setUp(){
         logger.info("Setting browser and creating the connection with the page");
-
-        browser = "edge";
+        String browser = "edge";
         loginPage = new LoginPageSauceDemo(browser); //the page is opened in loginPageSauceDemo constructor
 
+        logger.info("reading and saving username file values in a list");
         FileCsvScanner scannerUsers = new FileCsvScanner();
-        validUsers = scannerUsers.validUsernameScanner();
+        ArrayList<String> validUsers = scannerUsers.validUsernameScanner();
+
+        logger.info("selecting and adding random users for testing");
+        Random random = new Random();
+        int randomIndex = random.nextInt(validUsers.size());
+        randomValidUsername = validUsers.get(randomIndex);
 
         logger.info("The initial settings were done successfully");
 
@@ -49,9 +52,6 @@ public class LoginPageSauceDemoTest {
     @Test
     public void loginWithCredentialsByPassingUsername(){
         logger.info("Test case UC-2 Test Login form with credentials by passing Username:");
-        Random random = new Random();
-        int randomIndex = random.nextInt(validUsers.size());
-        String randomValidUsername = validUsers.get(randomIndex);
 
         String errorMessage = loginPage.login(randomValidUsername,"")
                 .getErrorMessage();
@@ -64,6 +64,19 @@ public class LoginPageSauceDemoTest {
 
 
     }
+    @Test
+    public void loginWithAcceptedCredentialsByPassingUsernameAndPassword(){
+        logger.info("Test case UC-3 Test Login form with credentials by passing Username & Password:\n" +
+                "\n" + "Type credentials in username which are under Accepted username are sections.");
+
+        String title = loginPage.login(randomValidUsername,VALID_PASSWORD)
+                .getTitle();
+
+        Assert.assertEquals("Swag Labs",title);
+        logger.info("Success test case UC-3");
+
+
+    }
 
     @After
     public void closePage(){
@@ -71,8 +84,6 @@ public class LoginPageSauceDemoTest {
         loginPage.close();
         logger.info("Browser closed");
     }
-
-
 
 
 
