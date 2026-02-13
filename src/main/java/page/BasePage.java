@@ -1,12 +1,10 @@
 package page;
 
-import utils.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.DriverManager;
 
 import java.time.Duration;
 
@@ -14,8 +12,8 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public BasePage(String browser){
-        this.driver = DriverFactory.setBrowser(browser);
+    public BasePage(WebDriver driver){
+        this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
@@ -38,13 +36,11 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    public void close(){
-        this.driver.quit();
-    }
 
     public String getTitle(){
         return driver.getTitle();
     }
 
+    //public void closePage(){driver.close();}
 }
 

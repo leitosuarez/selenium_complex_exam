@@ -10,6 +10,11 @@ import java.util.function.Supplier;
 public class DriverFactory {
 
     public static WebDriver setBrowser(String browser) {
+
+        if (browser == null){
+            throw new IllegalArgumentException("Browser cannot be null!");
+        }
+
         browser = browser.toLowerCase();
         Map<String, Supplier<WebDriver>> browserMap = Map.of(
                 "edge", EdgeDriver::new,

@@ -1,6 +1,8 @@
-package org.example;
+package runner;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.WebDriver;
-import utils.DriverManager;
+import driver.DriverSingleton;
 import utils.FileCsvScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.ArrayList;
 import java.util.Random;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class LoginPageSauceDemoTest {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPageSauceDemoTest.class);
     private static final String VALID_PASSWORD = "secret_sauce";
+    private static final String LOGIN_URL = "https://www.saucedemo.com/";
 
-    //private WebDriver driver;
+    private WebDriver driver;
     private LoginPageSauceDemo loginPage;
     private String randomValidUsername;
 
@@ -37,31 +41,28 @@ public class LoginPageSauceDemoTest {
 
     @AfterEach
     public void closePage() {
-        //if (driver != null) {
-            //driver.quit();
+        //if (loginPage != null){
+         //   loginPage.closePage();
         //}
-        if (loginPage != null){
-            loginPage.close();
-        }
+        DriverSingleton.closeDriver();
+
     }
 
-    // PARAMETRIZED TESTS
 
     @ParameterizedTest
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithEmptyCredentials(String browser) {
 
-         //driver = DriverManager.getDriver(browser);
-        //loginPage = new LoginPageSauceDemo(driver); //the page is opened in loginPageSauceDemo constructor
-        loginPage = new LoginPageSauceDemo(browser);
+        //WebDriver driver = DriverSingleton.getDriver(browser);
+        driver = DriverSingleton.getDriver(browser);
+        loginPage = new LoginPageSauceDemo(driver); //the page is opened in loginPageSauceDemo constructor
+        loginPage.openPage(LOGIN_URL);
 
         String errMessage = loginPage.login("", "")
                 .getErrorMessage();
 
-        int indexOfErrorMessage = errMessage.indexOf("Username");
-        String errMessageToValidate = errMessage.substring(indexOfErrorMessage);
-
-        Assertions.assertEquals("Username is required", errMessageToValidate);
+        boolean isMessageShown = errMessage.contains("Username is required");
+        Assertions.assertTrue(isMessageShown);
     }
 
 
@@ -69,17 +70,17 @@ public class LoginPageSauceDemoTest {
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithCredentialsByPassingUsername(String browser) {
 
-        //driver = DriverManager.getDriver(browser);
-        //loginPage = new LoginPageSauceDemo(driver);
-        loginPage = new LoginPageSauceDemo(browser);
+        //WebDriver driver = DriverSingleton.getDriver(browser);
+        driver = DriverSingleton.getDriver(browser);
+        loginPage = new LoginPageSauceDemo(driver);
+        loginPage.openPage(LOGIN_URL);
 
         String errorMessage = loginPage.login(randomValidUsername, "")
                 .getErrorMessage();
 
-        int indexOfErrorMessage = errorMessage.indexOf("Password");
-        String errorMessageToValidate = errorMessage.substring(indexOfErrorMessage);
 
-        Assertions.assertEquals("Password is required", errorMessageToValidate);
+        boolean isMessageShown = errorMessage.contains("Password is required");
+        Assertions.assertTrue(isMessageShown);
     }
 
 
@@ -87,9 +88,10 @@ public class LoginPageSauceDemoTest {
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithAcceptedCredentials(String browser) {
 
-        //driver = DriverManager.getDriver(browser);
-        //loginPage = new LoginPageSauceDemo(driver);
-        loginPage = new LoginPageSauceDemo(browser);
+        //WebDriver driver = DriverSingleton.getDriver(browser);
+        driver = DriverSingleton.getDriver(browser);
+        loginPage = new LoginPageSauceDemo(driver);
+        loginPage.openPage(LOGIN_URL);
 
         String title = loginPage.login(randomValidUsername, VALID_PASSWORD)
                 .getTitle();
