@@ -53,6 +53,13 @@
           <artifactId>logback-classic</artifactId>
           <version>1.4.11</version>
       </dependency>
+      <!-- JUnit 5: Soporte para pruebas parametrizadas -->
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-params</artifactId>
+          <version>5.10.0</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
     <build>
         <plugins>

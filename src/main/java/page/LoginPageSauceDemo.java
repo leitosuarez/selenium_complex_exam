@@ -1,7 +1,8 @@
-package pages;
+package page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 
 public class LoginPageSauceDemo extends BasePage {
     private static final String LOGIN_URL = "https://www.saucedemo.com/";
@@ -32,11 +33,6 @@ public class LoginPageSauceDemo extends BasePage {
 
         }
     }
-
-
-
-
-
 
 
 }
