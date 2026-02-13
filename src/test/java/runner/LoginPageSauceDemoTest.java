@@ -49,6 +49,7 @@ public class LoginPageSauceDemoTest {
     @ParameterizedTest
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithEmptyCredentials(String browser) {
+        logger.info("Test case: UC-1 Test Login form with empty credentials:");
 
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver); //the page is opened in loginPageSauceDemo constructor
@@ -58,12 +59,14 @@ public class LoginPageSauceDemoTest {
                 .getErrorMessage();
 
         assertThat(errorMessage).contains("Username is required");
+        logger.info("test UC-1 passed successfully");
     }
 
 
     @ParameterizedTest
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithCredentialsByPassingUsername(String browser) {
+        logger.info("Test case: UC-2 Test Login form with credentials by passing Username:");
 
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver);
@@ -74,12 +77,14 @@ public class LoginPageSauceDemoTest {
 
 
         assertThat(errorMessage).contains("Password is required");
+        logger.info("test UC-2 passed successfully");
     }
 
 
     @ParameterizedTest
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithAcceptedCredentials(String browser) {
+        logger.info("UC-3 Test Login form with credentials by passing Username & Password:");
 
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver);
@@ -89,5 +94,6 @@ public class LoginPageSauceDemoTest {
                 .getTitle();
 
         assertThat(title).isEqualTo("Swag Labs");
+        logger.info("test UC-3 passed successfully");
     }
 }
