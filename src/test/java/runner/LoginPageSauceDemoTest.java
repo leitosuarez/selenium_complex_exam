@@ -1,6 +1,4 @@
 package runner;
-//import org.junit.jupiter.api.parallel.Execution;
-//import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.WebDriver;
 import driver.DriverSingleton;
 import utils.FileCsvScanner;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@Execution(ExecutionMode.SAME_THREAD)
 public class LoginPageSauceDemoTest {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPageSauceDemoTest.class);
