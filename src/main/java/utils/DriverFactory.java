@@ -22,7 +22,7 @@ public class DriverFactory {
         );
 
         if (!browserMap.containsKey(browser)) {
-            throw new IllegalArgumentException("The navegator especified is has not support: " + browser);
+            throw new IllegalArgumentException("The navegator especified {} is not supported: " + browser);
         }
 
 

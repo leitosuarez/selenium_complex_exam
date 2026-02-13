@@ -1,6 +1,6 @@
 package runner;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
+//import org.junit.jupiter.api.parallel.Execution;
+//import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.WebDriver;
 import driver.DriverSingleton;
 import utils.FileCsvScanner;
@@ -12,8 +12,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import java.util.ArrayList;
 import java.util.Random;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@Execution(ExecutionMode.SAME_THREAD)
+//@Execution(ExecutionMode.SAME_THREAD)
 public class LoginPageSauceDemoTest {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPageSauceDemoTest.class);
@@ -41,11 +42,7 @@ public class LoginPageSauceDemoTest {
 
     @AfterEach
     public void closePage() {
-        //if (loginPage != null){
-         //   loginPage.closePage();
-        //}
         DriverSingleton.closeDriver();
-
     }
 
 
@@ -53,16 +50,14 @@ public class LoginPageSauceDemoTest {
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithEmptyCredentials(String browser) {
 
-        //WebDriver driver = DriverSingleton.getDriver(browser);
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver); //the page is opened in loginPageSauceDemo constructor
         loginPage.openPage(LOGIN_URL);
 
-        String errMessage = loginPage.login("", "")
+        String errorMessage = loginPage.login("", "")
                 .getErrorMessage();
 
-        boolean isMessageShown = errMessage.contains("Username is required");
-        Assertions.assertTrue(isMessageShown);
+        assertThat(errorMessage).contains("Username is required");
     }
 
 
@@ -70,7 +65,6 @@ public class LoginPageSauceDemoTest {
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithCredentialsByPassingUsername(String browser) {
 
-        //WebDriver driver = DriverSingleton.getDriver(browser);
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver);
         loginPage.openPage(LOGIN_URL);
@@ -79,8 +73,7 @@ public class LoginPageSauceDemoTest {
                 .getErrorMessage();
 
 
-        boolean isMessageShown = errorMessage.contains("Password is required");
-        Assertions.assertTrue(isMessageShown);
+        assertThat(errorMessage).contains("Password is required");
     }
 
 
@@ -88,7 +81,6 @@ public class LoginPageSauceDemoTest {
     @ValueSource(strings = {"edge", "firefox"})
     public void loginWithAcceptedCredentials(String browser) {
 
-        //WebDriver driver = DriverSingleton.getDriver(browser);
         driver = DriverSingleton.getDriver(browser);
         loginPage = new LoginPageSauceDemo(driver);
         loginPage.openPage(LOGIN_URL);
@@ -96,6 +88,6 @@ public class LoginPageSauceDemoTest {
         String title = loginPage.login(randomValidUsername, VALID_PASSWORD)
                 .getTitle();
 
-        Assertions.assertEquals("Swag Labs", title);
+        assertThat(title).isEqualTo("Swag Labs");
     }
 }

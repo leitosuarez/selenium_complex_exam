@@ -4,25 +4,28 @@ import org.openqa.selenium.WebDriver;
 import utils.DriverFactory;
 
 public class DriverSingleton {
-    private static WebDriver driver;
-    //private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    private DriverSingleton(){}
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static WebDriver getDriver(String browser){
-        if (driver == null){
-            //WebDriver newDriver = DriverFactory.setBrowser(browser);
-            //driver.set(newDriver);
-            driver = DriverFactory.setBrowser(browser);
+    private DriverSingleton() {}
+
+    public static WebDriver getDriver(String browser) {
+
+        if (driver.get() == null) {
+            WebDriver newDriver = DriverFactory.setBrowser(browser);
+            driver.set(newDriver);
         }
-        //return driver.get();
-        return driver;
+
+        return driver.get();
     }
 
-    public static void closeDriver(){
-        if (driver != null){
-            driver.quit();
-            driver = null;
+    public static void closeDriver() {
+
+        WebDriver currentDriver = driver.get();
+
+        if (currentDriver != null) {
+            currentDriver.quit();
+            driver.remove();
         }
     }
 }
