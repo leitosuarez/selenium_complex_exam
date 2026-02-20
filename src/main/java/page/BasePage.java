@@ -19,7 +19,6 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
 
     public void openPage(String url){
         driver.get(url);
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
     public String getText(By locator){
