@@ -35,11 +35,9 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-
     public String getTitle(){
         return driver.getTitle();
     }
 
-    //public void closePage(){driver.close();}
 }
 
