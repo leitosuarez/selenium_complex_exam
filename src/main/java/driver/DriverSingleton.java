@@ -11,15 +11,15 @@ public class DriverSingleton {
 
     private DriverSingleton() {}
 
-    public static void getDriver(String browser) {
+    public static WebDriver getDriver(String browser) {
 
         if (driver.get() == null) {
             WebDriver newDriver = DriverFactory.setBrowser(browser);
             driver.set(newDriver);
-
+            driver.get().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         }
-        driver.get().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-        driver.get();
+
+        return driver.get();
     }
 
     public static WebDriver getDriver() {

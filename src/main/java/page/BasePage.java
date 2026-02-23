@@ -1,6 +1,7 @@
 package page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -33,6 +34,14 @@ public abstract class BasePage { //-> no se puede instanciar, solo heredan las c
 
     public void click(By locator){
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+    }
+
+    public void clearInput(By element){
+        WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(element));
+        int inputLength = input.getAttribute("Value").length();
+        for (int i = 0; i <= inputLength; i++) {
+            input.sendKeys(Keys.BACK_SPACE);
+        }
     }
 
     public String getTitle(){

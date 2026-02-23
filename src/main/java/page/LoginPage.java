@@ -1,8 +1,6 @@
 package page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 
 public class LoginPage extends BasePage {
     private final By username = By.xpath("//input[@id='user-name']");
@@ -14,12 +12,26 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public LoginPage login(String username, String password){
+    public void clearUsername(){
+        clearInput(this.username);
+    }
+
+    public void clearPassword(){
+        clearInput(this.password);
+    }
+
+    public void setUsername(String username){
         setValueOnElement(this.username,username);
+    }
+
+    public void setPassword(String password){
         setValueOnElement(this.password,password);
+    }
+
+
+    public LoginPage clickLogin(){
         click(loginButton);
         return this;
-
     }
 
     public String getErrorMessage() throws TimeoutException{

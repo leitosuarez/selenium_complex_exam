@@ -1,12 +1,34 @@
-Feature: Login functionality in SauceDemo
+Feature: Login on saucedemo
 
-  Scenario Outline: Login validation scenarios
-    Given the user is on the login page
-    When the user logs in with username "<username>" and password "<password>"
-    Then the expected result should be "<expected>"
+    Background:
+        Given The user enters on the login page
 
-    Examples:
-      | username        | password       | expected                |
-      |                 |                | Username is required    |
-      | valid_user      |                | Password is required    |
-      | standard_user   | secret_sauce   | Swag Labs               |
+    #@UC1
+    Scenario: Login with empty credentials
+      When I enter "standard_user" in the username field
+      And I enter "secret_sauce" in the password field
+      And I clear the username field
+      And I clear the password field
+      And I click the login button
+      Then I see an error message "Epic sadface: Username is required"
+
+
+    Scenario: Login with empty password
+      When I enter "standard_user" in the username field
+      And I enter "secret_sauce" in the password field
+      And I clear the password field
+      And I click the login button
+      Then I see an error message "Epic sadface: Password is required"
+
+
+    Scenario Outline: Login with valid credentials
+      When I enter "<username>" in the username field
+      And I enter "<password>" in the password field
+      And I click the login button
+      Then I am redirected to the inventory page
+      And I see the inventory page title "Swag Labs"
+
+      Examples:
+        | username | password |
+        | standard_user | secret_sauce |
+        | visual_user   | secret_sauce |
